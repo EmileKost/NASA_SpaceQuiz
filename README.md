@@ -2,8 +2,8 @@
 <img width="1390" alt="Schermafbeelding 2022-07-06 om 19 58 42" src="https://user-images.githubusercontent.com/70690100/177613755-d9e21d4b-d51a-4720-9aee-fc8cdcbbf211.png">
 
 ## De opdracht
-Voor Real Time Web heb ik een real-time webapplicatie moeten maken waarbij er een open connectie is tussen de client en server side door middel van 
-websockets. De webapplicatie moet multi user supported zijn en moet data gebruiken uit een externe data bron. 
+Voor Real Time Web heb ik een real-time webapplicatie gemaakt waarbij er een open connectie is tussen de client en server side door middel van 
+websockets. De webapplicatie is multi user supported en er wordt data gebruikt uit een externe data bron. 
 
 ## Mijn concept
 Voor Real Time Web heb ik de NASA Space quiz ontwikkeld. De NASA Space quiz is een quiz waarbij meerdere gebruikers de juiste namen van vier verschillende
@@ -33,3 +33,22 @@ Endpoint gebruikt voor foto planeet Jupiter:
 ````
 const baseURLapi = 'https://images-api.nasa.gov/asset/PIA01492'
 ````
+Echter was er een zware tegenvaller. Ik kwam er namelijk achter dat de id's meerdere foto's teruggaven na het fetchen van de data. Ik vond dit erg
+apart omdat een id's meestal voor een specifiek object is. Dit heb ik gelukkig makkelijk kunnen oplossen door elke keer met een index alleen de 
+eerste foto op te halen en alleen deze te renderen.
+
+### Conclusie NASA Photo and Video library API
+Voor een Amerikaanse overheidsinstantie vind ik de API zwaar tegenvallen. Ik vind dat de documentatie onjuist en vaag is. Hierdoor kost het 
+veel tijd om uberhaupt iets van data te kunnen ophalen. Ik zou niet zo snel deze API meer gebruiken ongeacht de prachtige content die je eruit kan
+krijgen. Als experiment heb ik eerder de picture of the day api gebruikt van NASA. Deze API was super makkelijk te gebruiken en had deze situatie daarom
+niet verwacht.
+
+### Database Mongodb
+
+
+
+
+
+
+
+
