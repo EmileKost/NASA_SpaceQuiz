@@ -145,6 +145,234 @@ middel van .save(). Daarna wordt de promise afgehandeld en wordt het resultaat i
 ### Resultaat Mongodb Dashboard
 <img width="1205" alt="Schermafbeelding 2022-07-06 om 21 04 39" src="https://user-images.githubusercontent.com/70690100/177624162-c273ff2c-22b5-4c1e-932e-5a5ea3cdbe42.png">
 
+## Renderen van vragen
+Voor het renderen van de vragen wordt gelijk in de app.get alle data vanuit de database opgehaald en hierbij de juiste foto opgehaald vanuit de NASA api door de meegegeven url
+````
+app.get('/', (req, res) => {
+  question1 = Question.findOne({
+    answer: "Mars"
+  })
+ .then(result => {
+   question1 = result.image
+   
+   fetch(question1)
+    .then(async data => {
+      const question = await data.json();
+      let question2 = Question.findOne({
+        answer: "Jupiter"
+      })
+      .then(result2 => {
+        question2 = result2.image
+        fetch(question2)
+        .then(async data2 => {
+          const question2 = await data2.json()
+          
+          let question3 = Question.findOne({
+            answer: "Neptune"
+          })
+          .then(result3 => {
+            question3 = result3.image
+
+            fetch(question3)
+            .then(async data3 => {
+              const question3 = await data3.json()
+
+              let question4 = Question.findOne({
+                answer: "Mercury"
+              })
+              .then(result4 => {
+                question4 = result4.image
+                
+                fetch(question4)
+                .then(async data4 => {
+                  const question4 = await data4.json()
+
+                  res.render('index', {
+                    image: question.collection.items[0],
+                    hint: result.hint,
+                    answer: result.answer,
+
+                    image2: question2.collection.items[0],
+                    hint2: result2.hint,
+                    answer2: result2.answer,
+
+                    image3: question3.collection.items[0],
+                    hint3: result3.hint,
+                    answer3: result3.answer,
+
+                    image4: question4.collection.items[0],
+                    hint4: result4.hint,
+                    answer4: result4.answer,
+                  })
+                })
+              })
+            })
+          })
+        })
+      })
+   })
+ })
+ .catch((err) => {
+   console.log(err)
+ })
+})
+````
+Bij elke vraag wordt er eerst gezocht in de database naar de bijbehorende titel. Als de titel is opgehaald dan wordt er ee variabele gemaakt van de url die nodig is om zometeen de juiste foto op te halen voor de vraag. Deze variabele wordt meegeven in he fetch( ) event. Na het fetchen van de data wordt in de .then meteen gezocht naar de data voor de volgende vraag. Zo wordt er in een stuk door per vraag gezocht naar de juiste data. Na het ophalen van de data van de laatste vraag wordt de index pagina gerendert en worden alle vragen als objecten meegegeven.
+
+## Real Time Events
+Voor de NASA Space Quiz zijn er verschillende real time events. Deze worden hieronder besproken en uitgelegd.
+
+### Connection
+Het connectie event wordt uitgevoerd wanneer er een gebruiker connect met de server. Als de gebruiker een verbinding maakt met de server krijgt.
+
+#### Server side, connectie van gebruiker met server
+deze zijn eigen persoonlijke user id.
+````
+io.on('connection', (socket) => {
+  console.log('a user connected')
+  console.log(socket.id)
+ ````
+ 
+### Name
+Het tweede socket event is op name. Dit event wordt uitgevoerd wanneer iemand een gebruikersnaam voor de quiz aanmaakt. Wanneer
+dit gedaan is wordt het formulier vanuit de client side gesubmit. Hier wordt door socket.emit aangegeven dat het 'name' event op de server moet worden uitgevoerd. Op de server wordt er van de data van de gebruiker een object gemaakt, deze wordt in een array gezet. Door middel van io.emit wordt het object meegegeven aan de clientside Javascript. In de clientside javascript wordt data van de gebruiker gerendert.
+
+#### Client side, submit van gebruikersnaam
+````
+usernameForm.addEventListener('submit', event => {
+    event.preventDefault();
+    if(usernameInput.value) {
+        socket.emit('name', usernameInput.value);
+        usernameSection.classList.add('invisible');
+        quizSection.classList.remove('invisible');
+        usernameListSection.classList.remove('invisible');
+    }
+})
+````
+#### Server side, gebruikersdata in een object samenvoegen
+````
+socket.on('name', (name) => {
+    let object = {username: name , id: socket.id, points: 0}
+    users.push(object)
+    io.emit('name', {username: name , id: socket.id, points: 0})
+  })
+````
+#### Client side, renderen van de gebruikersdata
+````
+socket.on('name', user => {
+    usernameList.insertAdjacentHTML('beforeend', 
+    `<li id="text${user.id}"> 
+        <p>${user.username}</p>
+        <p>${user.points}</p>
+    </li>`)
+})  
+````
+### Answer events
+Het answer event is opgedeeld in de events answer een tot en met vier. Ik had graag efficientere code willen gebruiken maar daar
+ben ik door tijdsgebrek helaas niet meer aan toe gekomen. Het answer event is het event dat alle ingevulde antwoorden van de gebruikers controleerd om te kijken welke de juiste is. Het answer event vergelijkt de input met het antwoord van de vraag.
+Bij een goed antwoord wordt het event correctAnswer op de client side uitgevoerd. Bij een fout antwoord wordt het event 
+wrongAnswer uitgevoerd. Voor elke vraag werkt de code in principe het zelfde, de code wordt dus voor een vraag uitgelegd.
+
+#### Client side, versturen van het antwoord
+````
+const answerForm = document.querySelector('#chat-form');
+let input1 = document.querySelector('#quiz-input')
+
+answerForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  let answerValue = input1.value;
+  console.log(answerValue)
+  socket.emit('answer', answerValue)
+  answerValue = '';
+})
+````
+In de client side van mijn webapp wordt de submit van het antwoord formulier allereerst afgehandeld. Op het submit event wordt er een variabele aangemaakt die de waarde van het invoerveld opslaat. Door middel van socket.emit wordt aangegeven dat het answer event moet worden uitgevoerd, hierbij wordt het answerValue meegegeven en kan deze variabele in de server side worden gebruikt.
+
+#### Server side, ontvangen en controleren van antwoorden
+````
+
+  socket.on('answer', (answerValue) => {
+    Question.findOne({
+      answer: 'Mars'
+    })
+    .then(result => {
+      let goodAnswer = result.answer.toLowerCase()
+      let input = answerValue.toLowerCase()
+      console.log(goodAnswer)
+      console.log(input)
+
+      if(input === goodAnswer) {
+        console.log('the question is right')
+        io.emit('correctAnswer1', input)
+      }
+      else {
+        io.emit('wrongAnswer1', input)
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+  })
+ ````
+Op de server worden de antwoorden van de gebruikers opgehaald en gecontroleerd met het antwoord van de vraag. Allereerst wordt 
+de vraag in de database gezocht door middel van .findOne({)}. Het resultaat hiervan wordt in een variabele opgeslagen waarin wordt aangegeven dat het om het result.answer gaat. Met een if else statement wordt het goede antwoord vergeleken met de input van de gebruiker. Als dit zo is dan wordt door middel van io.emit het correctAnswer event op de clientside uitgevoerd. Is het antwoord fout? Dan wordt het event wrongAnswer op de client side uitgevoerd.
+
+#### Client side, correctAnswer event
+````
+socket.on('correctAnswer1', (answerValue) => {
+  alert(`The answer: ${answerValue} is correct!`)
+  question1.classList.remove('question1');
+  question1.classList.add('invisible')
+
+  
+  question2.classList.remove('invisible');
+  question2.classList.add('question1')
+})
+````
+Als de gebruiker de vraag goed heeft dan wordt er een melding naar alle gebruikers gestuurd met dat het antwoord goed is. Ook wordt
+de vraag met client side javascript en css weggehaald en wordt de volgende vraag voor elke gebruiker zichtbaar gemaakt. De gebruikers worden doorverwezen naar de volgende vraag en gaan zo verder met de quiz.
+
+#### Client side, wrongAnswer event
+````
+socket.on('wrongAnswer1', () => {
+  alert(`The answer is not correct`)
+})
+````
+Als het antwoord fout is krijgen alle gebruikers alleen een melding dat het antwoord niet goed is. De zelfde vraag blijft voor de gebruikers zichtbaar tot dat wél het goede antwoord is gegeven.
+
+## Data Life Cycle
+![datamodel](https://user-images.githubusercontent.com/70690100/177752446-7b48721e-6bb1-4757-a70f-e5b2e7a7f2a6.png)
+
+## Data modeling
+![datamodelling](https://user-images.githubusercontent.com/70690100/177754057-4e5f9792-7f5b-41ab-9e5a-3a5bf7eb70a9.png)
+
+## Dependencies
+* Node js
+* Nodemon
+* Node-fetch
+* Express
+* Mongoose
+* body-parser
+
+## Features
+* Open connectie tussen server en client
+* Foto's van planeten worden opgehaald uit NASA API
+* Quizvragen opgeslagen in Mongodb database
+* Aanmaken van username en id
+* Samen een quiz spelen
+* Antwoorden worden gecontroleerd
+
+## Wishlist
+* Efficientere code voor ophalen en renderen van alle quizvragen
+* Efficientere code voor het controleren op het juiste antwoord
+* Leaderboord die punten bij houdt per gebruiker
+
+
+
+
+
+
+
 
 
 
