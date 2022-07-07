@@ -96,7 +96,7 @@ app.get('/', (req, res) => {
               })
               .then(result4 => {
                 question4 = result4.image
-
+                
                 fetch(question4)
                 .then(async data4 => {
                   const question4 = await data4.json()
@@ -130,18 +130,6 @@ app.get('/', (req, res) => {
    console.log(err)
  })
 })
-
-
-// function getQuestion1() {
-//   fetch('https://images-api.nasa.gov/asset/PIA04591')
-//   .then(async result => {
-//     const question1 = await result.json();
-//     question1Image = question1.collection.items[0].href
-//     question1Hint = 'This planet is named after the Roman god of war'
-//     console.log(question1Image, question1Hint)
-//   })
-// }
-
 
 //SOCKET IO
 let users = [];
