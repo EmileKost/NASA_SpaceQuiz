@@ -1,6 +1,16 @@
 # NASA Space Quiz
 <img width="1390" alt="Schermafbeelding 2022-07-06 om 19 58 42" src="https://user-images.githubusercontent.com/70690100/177613755-d9e21d4b-d51a-4720-9aee-fc8cdcbbf211.png">
 
+## Clone dit project
+````
+git clone https://github.com/EmileKost/NASA_SpaceQuiz
+````
+* Open het project
+* Npm install om alle packages te kunnen gebruiken
+* Npm start om de website te activeren
+* Website te vinden op localhost:3000
+
+
 ## De opdracht
 Voor Real Time Web heb ik een real-time webapplicatie gemaakt waarbij er een open connectie is tussen de client en server side door middel van 
 websockets. De webapplicatie is multi user supported en er wordt data gebruikt uit een externe data bron. 
