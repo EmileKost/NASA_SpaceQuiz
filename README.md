@@ -8,7 +8,6 @@ git clone https://github.com/EmileKost/NASA_SpaceQuiz
 * Open het project
 * Npm install om alle packages te kunnen gebruiken
 * Npm start om de website te activeren
-* Website te vinden op localhost:3000
 
 
 ## De opdracht
