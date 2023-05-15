@@ -1,5 +1,6 @@
 # NASA Space Quiz
-<img width="1390" alt="Schermafbeelding 2022-07-06 om 19 58 42" src="https://user-images.githubusercontent.com/70690100/177613755-d9e21d4b-d51a-4720-9aee-fc8cdcbbf211.png">
+![Screenshot 2023-05-15 at 11 39 27](https://github.com/EmileKost/NASA_SpaceQuiz/assets/70690100/5a9948af-4fbe-48a9-90fc-1ac52b8370b6)
+
 
 ## Clone dit project
 ````
