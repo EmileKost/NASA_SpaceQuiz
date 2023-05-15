@@ -8,17 +8,19 @@ const bodyParser = require('body-parser')
 const flash = require('express-flash')
 
 const io = require('socket.io')(http)
-const port = process.env.PORT || 4500
+const port = process.env.PORT || 7200
 
 //Database connection
 const mongoose = require('mongoose');
 const Question = require('./models/Question.js')
 const { getEnvironmentData } = require('worker_threads')
-const dbURI = 'mongodb+srv://developerEmile:test@nasaspacequiz.zrhfg.mongodb.net/?retryWrites=true&w=majority';
+const dbURI = 'mongodb+srv://Tranquilo:smikkel@nasaspacequiz.zrhfg.mongodb.net/?retryWrites=true&w=majority';
+const URI = `mongodb+srv://developerEmile:test@nasaspacequiz.zrhfg.mongodb.net/?retryWrites=true&w=majority`
 
+mongoose.set('strictQuery', false);
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then((result) =>  console.log('Mongodb connected'))
-  .catch((error) => console.log(error + 'has occured'))
+  .catch((error) => console.log(error + ' has occured ERROR OELWAPPER'))
 
 http.listen(port, () => {
   console.log('Socket io application is running on ' + port)

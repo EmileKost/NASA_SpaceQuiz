@@ -11,22 +11,34 @@ let usernameInput = document.querySelector('#username-input');
 let usernameList = document.querySelector('#usernameList');
 
 const usernameListSection = document.querySelector('#username');
+const usernameInputForm = document.querySelector('#username-input');
+
+// Work out later.
+usernameInputForm.addEventListener('change', () => {
+  const invalidChars = ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '/', '?'];
+  invalidChars.forEach((char) => {
+    if(usernameInputForm.value.includes(char)) {
+      console.log(`${char} is not a valid char in username`);
+    }
+  })
+})
 
 usernameForm.addEventListener('submit', event => {
     event.preventDefault();
-    if(usernameInput.value) {
-        socket.emit('name', usernameInput.value);
-        usernameSection.classList.add('invisible');
-        quizSection.classList.remove('invisible');
-        usernameListSection.classList.remove('invisible');
+    if(!usernameInput.value) {
+      alert('Please enter an username first');
     }
+    socket.emit('name', usernameInput.value);
+    usernameSection.classList.add('invisible');
+    quizSection.classList.remove('invisible');
+    usernameListSection.classList.remove('invisible');
+    usernameInput.value = "";
 })
 
 socket.on('name', user => {
     usernameList.insertAdjacentHTML('beforeend', 
-    `<li id="text${user.id}"> 
-        <p>${user.username}</p>
-        <p>${user.points}</p>
+    `<li class="user-item" id="text${user.id}"> 
+        <h4>${user.username}</h4>
     </li>`)
 })  
 
@@ -43,9 +55,8 @@ let input1 = document.querySelector('#quiz-input')
 answerForm.addEventListener('submit', (event) => {
   event.preventDefault();
   let answerValue = input1.value;
-  console.log(answerValue)
+  input1.value = '';
   socket.emit('answer', answerValue)
-  answerValue = '';
 })
 
 
@@ -70,8 +81,8 @@ let input2 = document.querySelector('#question2-input');
 answer2Form.addEventListener('submit', (event) => {
   event.preventDefault();
   let answer2Value = input2.value;
+  input1.value = '';
   socket.emit('answer2', answer2Value)
-  answer2Value = '';
 })
 
 socket.on('correctAnswer2', (answer2Value) => {
@@ -95,8 +106,8 @@ let input3 = document.querySelector('#question3-input');
 answer3Form.addEventListener('submit', (event) => {
   event.preventDefault();
   let answer3Value = input3.value;
+  input1.value = '';
   socket.emit('answer3', answer3Value)
-  answer3Value = '';
 })
 
 socket.on('correctAnswer3', (answer3Value) => {
@@ -120,17 +131,17 @@ let input4 = document.querySelector('#question4-input');
 answer4Form.addEventListener('submit', (event) => {
   event.preventDefault();
   let answer4Value = input4.value;
+  input1.value = '';
   socket.emit('answer4', answer4Value)
-  answer4Value = '';
 })
 
 socket.on('correctAnswer4', (answer4Value) => {
   alert(`The answer: ${answer4Value} is correct!`)
   quizSection.classList.add('invisible')
-  let footer = document.querySelector('footer');
-  footer.classList.add('invisible')
-
+ 
   let endText = document.querySelector('#end');
+  let header = document.querySelector('header');
+  header.classList.toggle('invisible');
   endText.classList.remove('invisible')
 })
 

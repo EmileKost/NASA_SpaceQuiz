@@ -9,9 +9,9 @@
     <title>SPACE QUIZ</title>
 </head>
 <body>
-    <header>
+    <header class="">
         <h1>
-          NASA Quiz 
+          NASA SPACE QUIZ
         </h1>
     </header>
     <main>
@@ -19,70 +19,88 @@
         <section id="username-section" class="">
             <h2>Create an username</h2>
             <form id="username-form">
-                <input type="text" placeholder="username" id="username-input">
+              <div class="input-container">
+                <label for="username">Your Awesome Username</label>
+                <input name="username" type="text" placeholder="" id="username-input" maxlength="20">
+              </div>
                 <button id="submit-username" type="submit">Create username</button>
             </form>
             </section>
 
         <section id="quiz" class="invisible">
-          <ul id="quiz-chat">
-          </ul>
+
+          <div class="username-list-container">
+            <h3>PLAYERS</h3>
+            <ul id="usernameList">
+            </ul>
+          </div>
+         
 
           <section class="question1" id="vraag1">
-            <h3>Which planet is this?</h3>
-            <p><%= hint %></p>
+            <div class="question-text-container">
+              <h2>Which planet is this?</h2>
+              <p><%= hint %></p>
+            </div>
             <img src="<%= image.href %>" alt="The image of the first question">
-            <form id="chat-form">
+            <form id="chat-form" class="quiz-form">
                 <input type="text" autocomplete="off" id="quiz-input" placeholder="Your answer here...">
-                <button><span>Send</span></button>
+                <button type="submit">Submit</button>
               </form>
             </section>
 
             <section class="invisible" id="vraag2">
-              <h3>Which planet is this?</h3>
-              <p><%= hint2 %></p>
-              <img src="<%= image2.href %>" alt="The image of the first question">
-              <form id="question2-form">
+              <div class="question-text-container">
+                <h2>Which planet is this?</h2>
+                <p><%= hint2 %></p>
+              </div>
+              <img src="<%= image2.href %>" alt="The image of the second question">
+              <form id="question2-form" class="quiz-form">
                   <input type="text" autocomplete="off" id="question2-input" placeholder="Your answer here...">
-                  <button><span>Send</span></button>
+                  <button type="submit">Submit</button>
                 </form>
               </section>
 
               <section class="invisible" id="vraag3">
-                <h3>Which planet is this?</h3>
-                <p><%= hint3 %></p>
-                <img src="<%= image3.href %>" alt="The image of the first question">
-                <form id="question3-form">
+                <div class="question-text-container">
+                  <h2>Which planet is this?</h2>
+                  <p><%= hint3 %></p>
+                </div>
+                <img src="<%= image3.href %>" alt="The image of the third question">
+                <form id="question3-form" class="quiz-form">
                     <input type="text" autocomplete="off" id="question3-input" placeholder="Your answer here...">
-                    <button><span>Send</span></button>
+                    <button type="submit">Submit</button>
                   </form>
                 </section>
 
                 <section class="invisible" id="vraag4">
-                  <h3>Which planet is this?</h3>
-                  <p><%= hint4 %></p>
-                  <img src="<%= image4.href %>" alt="The image of the first question">
-                  <form id="question4-form">
+                  <div class="question-text-container">
+                    <h2>Which planet is this?</h2>
+                    <p><%= hint4 %></p>
+                  </div>
+                  <img src="<%= image4.href %>" alt="The image of the fourth question">
+                  <form id="question4-form" class="quiz-form">
                       <input type="text" autocomplete="off" id="question4-input" placeholder="Your answer here...">
-                      <button><span>Send</span></button>
+                      <button type="submit">Submit</button>
                     </form>
                   </section>
         </section>
         <section id="end" class="invisible">
-          <p>
-            Thank you for playing!
-          </p>
-          <a href="/">BATTLE AGAIN!</a>
+          <div class="end-container">
+            <h2>
+              Thanks for playing!
+            </h2>
+            <a href="/">BATTLE AGAIN!</a>
+          </div>
         </section>
       </main>
 
-      <footer>
+      <!-- <footer>
         <section id="username" class="invisible">
             <h3>PLAYERS</h3>
             <ul id="usernameList">
             </ul>
             </section>
-      </footer>
+      </footer> -->
     <script src="/socket.io/socket.io.js"></script>
 </body>
 </html>
